@@ -28,6 +28,7 @@ class PhotoEditorView @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyle) {
 
     private var mImgSource: FilterImageView = FilterImageView(context)
+    private var mProfileSource: CircularImageView = CircularImageView(context)
 
     internal var drawingView: DrawingView
         private set
@@ -58,6 +59,10 @@ class PhotoEditorView @JvmOverloads constructor(
         //Add image source
         addView(mImgSource, sourceParam)
 
+        // my Custom Profile
+        val profileParams = setProfileSource()
+        addView(mProfileSource, profileParams)
+
         //Add Gl FilterView
         addView(mImageFilterView, filterParam)
 
@@ -65,11 +70,28 @@ class PhotoEditorView @JvmOverloads constructor(
         addView(drawingView, brushParam)
     }
 
+    fun setProfileSource() : LayoutParams  {
+        val displayMetrics = context.resources.displayMetrics
+        mProfileSource.apply {
+            id = profileImgSrcId
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+
+        val params = LayoutParams(
+            (200 * displayMetrics.density).toInt(),
+            (200 * displayMetrics.density).toInt()
+        )
+        params.addRule(CENTER_IN_PARENT, TRUE)
+        return params
+    }
+
+
     @SuppressLint("Recycle")
     private fun setupImageSource(attrs: AttributeSet?): LayoutParams {
         mImgSource.id = imgSrcId
         mImgSource.adjustViewBounds = true
-        mImgSource.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        mImgSource.scaleType = ImageView.ScaleType.CENTER_CROP
 
         attrs?.let {
             val a = context.obtainStyledAttributes(it, R.styleable.PhotoEditorView)
@@ -128,6 +150,9 @@ class PhotoEditorView @JvmOverloads constructor(
     val source: ImageView
         get() = mImgSource
 
+    val profile: ImageView
+        get() = mProfileSource
+
     internal suspend fun saveFilter(): Bitmap {
         return if (mImageFilterView.visibility == VISIBLE) {
             val saveBitmap = try {
@@ -164,5 +189,6 @@ class PhotoEditorView @JvmOverloads constructor(
         private const val imgSrcId = 1
         private const val shapeSrcId = 2
         private const val glFilterId = 3
+        private const val profileImgSrcId = 4
     }
 }
