@@ -70,7 +70,7 @@ class PhotoEditorView @JvmOverloads constructor(
         addView(drawingView, brushParam)
     }
 
-    fun setProfileSource() : LayoutParams  {
+    private fun setProfileSource() : LayoutParams  {
         val displayMetrics = context.resources.displayMetrics
         mProfileSource.apply {
             id = profileImgSrcId
