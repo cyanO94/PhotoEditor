@@ -74,7 +74,7 @@ class PhotoEditorView @JvmOverloads constructor(
         val displayMetrics = context.resources.displayMetrics
         mProfileSource.apply {
             id = profileImgSrcId
-            adjustViewBounds = true
+            adjustViewBounds = false
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
 
