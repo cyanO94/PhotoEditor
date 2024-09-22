@@ -62,9 +62,11 @@ internal class PhotoEditorImpl @SuppressLint("ClickableViewAccessibility") const
             val width = stickerView.width
             val height = stickerView.height
             val rotate = stickerView.rotation
+            val tag = stickerView.tag
 
             stickersWithPosition.add(
                 StickerLocation(
+                    tag.toString().toInt(),
                     location[0].toFloat() - xOffset,
                     location[1].toFloat() - yOffset,
                     rotate,
@@ -83,23 +85,24 @@ internal class PhotoEditorImpl @SuppressLint("ClickableViewAccessibility") const
         yOffset = y
     }
 
-    override fun addImageWithLocation(desiredImage: Bitmap, location: StickerLocation) {
+    override fun addImageWithLocation(desiredImage: Bitmap, tag: Int, location: StickerLocation?) {
         val multiTouchListener = getMultiTouchListener(true)
         val sticker = Sticker(photoEditorView, multiTouchListener, viewState, mGraphicManager)
 
         sticker.buildView(desiredImage)
 
-        addToEditor(sticker, location)
+        addToEditor(sticker, tag, location)
     }
 
-    private fun addToEditor(graphic: Graphic, location: StickerLocation) {
+    private fun addToEditor(graphic: Graphic, tag: Int, location: StickerLocation?) {
         clearHelperBox()
-        mGraphicManager.addView(graphic, location)
+        mGraphicManager.addView(graphic, tag,  location)
         // Change the in-focus view
         viewState.currentSelectedView = graphic.rootView
     }
 
 
+    @Deprecated("Need Tag - use addImageWithLocation")
     override fun addImage(desiredImage: Bitmap) {
         val multiTouchListener = getMultiTouchListener(true)
         val sticker = Sticker(photoEditorView, multiTouchListener, viewState, mGraphicManager)

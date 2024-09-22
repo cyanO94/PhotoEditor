@@ -38,25 +38,28 @@ internal class GraphicManager(
         )
     }
 
-    fun addView(graphic: Graphic, location: StickerLocation) {
+    fun addView(graphic: Graphic, tag: Int, location: StickerLocation?) {
         val view = graphic.rootView
         val params = RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
         mPhotoEditorView.addView(view, params)
+        view.tag = tag
 
-        view.pivotX = view.width / 2f
-        view.pivotY = view.height / 2f
+        location?.let {
+            view.pivotX = view.width / 2f
+            view.pivotY = view.height / 2f
 
-        view.scaleX = location.scale
-        view.scaleY = location.scale
-        view.rotation = location.rotation
+            view.scaleX = location.scale
+            view.scaleY = location.scale
+            view.rotation = location.rotation
 
-        val adjustedX = location.x - (view.width * (location.scale - 1) / 2)
-        val adjustedY = location.y - (view.height * (location.scale - 1) / 2)
-        view.x = adjustedX
-        view.y = adjustedY
+            val adjustedX = location.x - (view.width * (location.scale - 1) / 2)
+            val adjustedY = location.y - (view.height * (location.scale - 1) / 2)
+            view.x = adjustedX
+            view.y = adjustedY
+        }
 
         mViewState.addAddedView(view)
 

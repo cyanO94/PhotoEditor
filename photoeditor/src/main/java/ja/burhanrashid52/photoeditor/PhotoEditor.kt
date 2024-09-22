@@ -26,7 +26,7 @@ interface PhotoEditor {
      */
     fun addImage(desiredImage: Bitmap)
 
-    fun addImageWithLocation(desiredImage: Bitmap, location: StickerLocation)
+    fun addImageWithLocation(desiredImage: Bitmap, tag: Int, location: StickerLocation?)
 
     fun getStickersPosition() : List<StickerLocation>
     fun setOffset(x: Float, y: Float)
