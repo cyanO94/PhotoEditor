@@ -48,10 +48,63 @@ internal class PhotoEditorImpl @SuppressLint("ClickableViewAccessibility") const
     private val mGraphicManager: GraphicManager = GraphicManager(builder.photoEditorView, viewState)
     private val context: Context = builder.context
 
+    private var xOffset: Float = 0f
+    private var yOffset: Float = 0f
+
+    override fun getStickersPosition() :  List<StickerLocation> {
+        val stickersWithPosition = mutableListOf<StickerLocation>()
+
+        viewState.getAddedView().forEach { stickerView ->
+            val location = IntArray(2)
+            stickerView.getLocationInWindow(location)
+
+            val scale = stickerView.scaleX
+            val width = stickerView.width
+            val height = stickerView.height
+            val rotate = stickerView.rotation
+
+            stickersWithPosition.add(
+                StickerLocation(
+                    location[0].toFloat() - xOffset,
+                    location[1].toFloat() - yOffset,
+                    rotate,
+                    width,
+                    height,
+                    scale
+                )
+            )
+        }
+
+        return stickersWithPosition
+    }
+
+    override fun setOffset(x: Float, y: Float) {
+        xOffset = x
+        yOffset = y
+    }
+
+    override fun addImageWithLocation(desiredImage: Bitmap, location: StickerLocation) {
+        val multiTouchListener = getMultiTouchListener(true)
+        val sticker = Sticker(photoEditorView, multiTouchListener, viewState, mGraphicManager)
+
+        sticker.buildView(desiredImage)
+
+        addToEditor(sticker, location)
+    }
+
+    private fun addToEditor(graphic: Graphic, location: StickerLocation) {
+        clearHelperBox()
+        mGraphicManager.addView(graphic, location)
+        // Change the in-focus view
+        viewState.currentSelectedView = graphic.rootView
+    }
+
+
     override fun addImage(desiredImage: Bitmap) {
         val multiTouchListener = getMultiTouchListener(true)
         val sticker = Sticker(photoEditorView, multiTouchListener, viewState, mGraphicManager)
         sticker.buildView(desiredImage)
+
         addToEditor(sticker)
     }
 

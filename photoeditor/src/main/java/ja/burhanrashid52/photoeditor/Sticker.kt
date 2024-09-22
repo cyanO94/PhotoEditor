@@ -25,6 +25,8 @@ internal class Sticker(
         imageView?.setImageBitmap(desiredImage)
     }
 
+    fun getImageView() = imageView
+
     private fun setupGesture() {
         val onGestureControl = buildGestureController(mPhotoEditorView, mViewState)
         mMultiTouchListener.setOnGestureControl(onGestureControl)

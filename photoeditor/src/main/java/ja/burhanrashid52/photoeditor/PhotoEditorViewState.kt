@@ -14,6 +14,10 @@ internal class PhotoEditorViewState {
         currentSelectedView = null
     }
 
+    fun getAddedView(): List<View> {
+        return addedViews
+    }
+
     fun getAddedView(index: Int): View {
         return addedViews[index]
     }

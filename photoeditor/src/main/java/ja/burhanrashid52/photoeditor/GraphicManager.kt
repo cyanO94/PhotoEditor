@@ -38,6 +38,38 @@ internal class GraphicManager(
         )
     }
 
+    fun addView(graphic: Graphic, location: StickerLocation) {
+        val view = graphic.rootView
+        val params = RelativeLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        mPhotoEditorView.addView(view, params)
+
+        view.pivotX = view.width / 2f
+        view.pivotY = view.height / 2f
+
+        view.scaleX = location.scale
+        view.scaleY = location.scale
+        view.rotation = location.rotation
+
+        val adjustedX = location.x - (view.width * (location.scale - 1) / 2)
+        val adjustedY = location.y - (view.height * (location.scale - 1) / 2)
+        view.x = adjustedX
+        view.y = adjustedY
+
+        mViewState.addAddedView(view)
+
+        if (redoStackCount > 0) {
+            mViewState.clearRedoViews()
+        }
+
+        onPhotoEditorListener?.onAddViewListener(
+            graphic.viewType,
+            mViewState.addedViewsCount
+        )
+    }
+
     fun removeView(graphic: Graphic) {
         val view = graphic.rootView
         if (mViewState.containsAddedView(view)) {

@@ -26,6 +26,11 @@ interface PhotoEditor {
      */
     fun addImage(desiredImage: Bitmap)
 
+    fun addImageWithLocation(desiredImage: Bitmap, location: StickerLocation)
+
+    fun getStickersPosition() : List<StickerLocation>
+    fun setOffset(x: Float, y: Float)
+
     /**
      * This add the text on the [PhotoEditorView] with provided parameters
      * by default [TextView.setText] will be 18sp
