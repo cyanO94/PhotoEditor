@@ -2,7 +2,10 @@ package ja.burhanrashid52.photoeditor
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import ja.burhanrashid52.photoeditor.BitmapUtil.removeTransparency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -78,10 +81,31 @@ internal class PhotoSaverTask(
     }
 
     private fun captureView(view: View): Bitmap {
+        convertHardwareBitmapsToSoftware(view)
         val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
         return bitmap
     }
 
+    private fun convertHardwareBitmapsToSoftware(view: View) {
+        if (view is ImageView) {
+            val drawable = view.drawable
+            if (drawable is BitmapDrawable) {
+                val bitmap = drawable.bitmap
+                if (bitmap.config == Bitmap.Config.HARDWARE) {
+                    // 하드웨어 비트맵을 소프트웨어 비트맵으로 변환
+                    val softwareBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                    view.setImageBitmap(softwareBitmap)
+                }
+            }
+        }
+
+        // 자식 뷰가 있는 경우에도 하드웨어 비트맵 변환 적용
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                convertHardwareBitmapsToSoftware(view.getChildAt(i))
+            }
+        }
+    }
 }

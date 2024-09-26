@@ -273,7 +273,7 @@ internal class PhotoEditorImpl @SuppressLint("ClickableViewAccessibility") const
         imagePath: String,
         saveSettings: SaveSettings
     ): SaveFileResult = withContext(Dispatchers.Main) {
-        photoEditorView.saveFilter()
+        //photoEditorView.saveFilter()
         val photoSaverTask = PhotoSaverTask(photoEditorView, mBoxHelper, saveSettings)
         return@withContext photoSaverTask.saveImageAsFile(imagePath)
     }
@@ -281,7 +281,7 @@ internal class PhotoEditorImpl @SuppressLint("ClickableViewAccessibility") const
     override suspend fun saveAsBitmap(
         saveSettings: SaveSettings
     ): Bitmap = withContext(Dispatchers.Main) {
-        photoEditorView.saveFilter()
+        //photoEditorView.saveFilter()
         val photoSaverTask = PhotoSaverTask(photoEditorView, mBoxHelper, saveSettings)
         return@withContext photoSaverTask.saveImageAsBitmap()
     }

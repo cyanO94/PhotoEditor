@@ -5,9 +5,11 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatImageView
 import ja.burhanrashid52.photoeditor.FilterImageView.OnImageChangedListener
 
 /**
@@ -27,7 +29,7 @@ class PhotoEditorView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : RelativeLayout(context, attrs, defStyle) {
 
-    private var mImgSource: FilterImageView = FilterImageView(context)
+    private var mImgSource: AppCompatImageView = AppCompatImageView(context)
     private var mProfileSource: CircularImageView = CircularImageView(context)
 
     internal var drawingView: DrawingView
@@ -43,13 +45,13 @@ class PhotoEditorView @JvmOverloads constructor(
         mImageFilterView = ImageFilterView(context)
         val filterParam = setupFilterView()
 
-        mImgSource.setOnImageChangedListener(object : OnImageChangedListener {
+     /*   mImgSource.setOnImageChangedListener(object : OnImageChangedListener {
             override fun onBitmapLoaded(sourceBitmap: Bitmap?) {
                 mImageFilterView.setFilterEffect(PhotoFilter.NONE)
                 mImageFilterView.setSourceBitmap(sourceBitmap)
                 Log.d(TAG, "onBitmapLoaded() called with: sourceBitmap = [$sourceBitmap]")
             }
-        })
+        })*/
 
 
         //Setup drawing view
@@ -90,16 +92,17 @@ class PhotoEditorView @JvmOverloads constructor(
     @SuppressLint("Recycle")
     private fun setupImageSource(attrs: AttributeSet?): LayoutParams {
         mImgSource.id = imgSrcId
-        mImgSource.adjustViewBounds = true
+        //mImgSource.adjustViewBounds = true
         mImgSource.scaleType = ImageView.ScaleType.CENTER_CROP
+        //mImgSource.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
-        attrs?.let {
+/*        attrs?.let {
             val a = context.obtainStyledAttributes(it, R.styleable.PhotoEditorView)
             val imgSrcDrawable = a.getDrawable(R.styleable.PhotoEditorView_photo_src)
             if (imgSrcDrawable != null) {
                 mImgSource.setImageDrawable(imgSrcDrawable)
             }
-        }
+        }*/
 
         var widthParam = ViewGroup.LayoutParams.MATCH_PARENT
         if (clipSourceImage) {
@@ -153,6 +156,7 @@ class PhotoEditorView @JvmOverloads constructor(
     val profile: ImageView
         get() = mProfileSource
 
+/*
     internal suspend fun saveFilter(): Bitmap {
         return if (mImageFilterView.visibility == VISIBLE) {
             val saveBitmap = try {
@@ -164,9 +168,10 @@ class PhotoEditorView @JvmOverloads constructor(
             mImageFilterView.visibility = GONE
             saveBitmap
         } else {
-            mImgSource.bitmap!!
+            //mImgSource.bitmap!!
         }
     }
+*/
 
     internal fun setFilterEffect(filterType: PhotoFilter) {
         mImageFilterView.visibility = VISIBLE
