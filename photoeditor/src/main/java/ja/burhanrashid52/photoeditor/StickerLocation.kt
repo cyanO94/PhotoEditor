@@ -22,3 +22,13 @@ data class StickerLocation(
     )
 }
 
+
+fun Sticker.toStickerLocation() = StickerLocation(
+    stickerId = stickerId.toString(),
+    x = x,
+    y = y,
+    rotation = rotation,
+    width = width,
+    height = height,
+    scale = scale
+)
