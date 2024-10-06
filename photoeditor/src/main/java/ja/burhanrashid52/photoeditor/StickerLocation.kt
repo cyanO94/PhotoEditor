@@ -1,6 +1,6 @@
 package ja.burhanrashid52.photoeditor
 
-import com.rainbow.data.model.memoryspace.Sticker
+import com.telepawthy.data.model.memoryspace.Sticker
 
 data class StickerLocation(
     val stickerId: String,
